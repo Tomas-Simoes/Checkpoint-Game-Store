@@ -1,0 +1,103 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(255, 47, 179, 0.18), transparent 28rem),
+    radial-gradient(circle at top right, rgba(0, 217, 255, 0.14), transparent 26rem),
+    var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app-shell {
+  height: 100svh;
+  overflow-x: clip;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  scroll-padding-top: 78px;
+  scroll-snap-type: y mandatory;
+}
+
+.snap-section {
+  min-height: calc(100svh - 78px);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  font-weight: 800;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.button-primary {
+  background: var(--yellow);
+  color: #15100a;
+  box-shadow: 6px 6px 0 var(--pink);
+}
+
+.button-secondary {
+  border-color: var(--cyan);
+  background: rgba(0, 217, 255, 0.08);
+  color: var(--text);
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--green);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.section-inner {
+  width: min(var(--max-width), calc(100% - 40px));
+  margin: 0 auto;
+}

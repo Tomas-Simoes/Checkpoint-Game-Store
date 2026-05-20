@@ -1,0 +1,216 @@
+.contact-section {
+  display: grid;
+  align-items: center;
+  padding: 76px 0;
+  background:
+    linear-gradient(135deg, rgba(0, 217, 255, 0.18), transparent 30%),
+    linear-gradient(315deg, rgba(80, 255, 138, 0.12), transparent 32%),
+    #0d0b11;
+}
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.75fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 58px;
+}
+
+.arcade-machine {
+  position: relative;
+  max-width: 360px;
+  padding: 22px 22px 30px;
+  border: 5px solid #040306;
+  border-radius: 8px 8px 22px 22px;
+  background: linear-gradient(160deg, #ff2fb3, #ff7a2f 48%, #00d9ff);
+  box-shadow: 16px 16px 0 rgba(0, 0, 0, 0.45);
+}
+
+.machine-marquee {
+  padding: 14px;
+  border: 3px solid #040306;
+  border-radius: 6px;
+  background: #fff8e8;
+  color: #110c13;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.machine-screen {
+  display: grid;
+  min-height: 210px;
+  margin-top: 18px;
+  place-content: center;
+  border: 10px solid #040306;
+  border-radius: 8px;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.07) 0 2px, transparent 2px 6px),
+    radial-gradient(circle, rgba(0, 217, 255, 0.42), transparent 8rem),
+    #11101a;
+  text-align: center;
+}
+
+.machine-screen strong {
+  margin-top: 16px;
+  font-size: 1.35rem;
+  text-transform: uppercase;
+}
+
+.pixel-flag {
+  position: relative;
+  display: block;
+  width: 76px;
+  height: 76px;
+  margin: 0 auto;
+}
+
+.pixel-flag::before {
+  position: absolute;
+  left: 22px;
+  bottom: 0;
+  width: 8px;
+  height: 68px;
+  content: "";
+  background: var(--text);
+  box-shadow: 7px 0 0 #5d5565;
+}
+
+.pixel-flag::after {
+  position: absolute;
+  left: 35px;
+  top: 8px;
+  width: 36px;
+  height: 28px;
+  content: "";
+  background: linear-gradient(90deg, var(--yellow) 0 50%, var(--cyan) 50%);
+  clip-path: polygon(0 0, 100% 0, 76% 50%, 100% 100%, 0 100%);
+  box-shadow: 6px 6px 0 #040306;
+}
+
+.machine-panel {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 18px;
+  border: 3px solid #040306;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.machine-panel span {
+  width: 30px;
+  aspect-ratio: 1;
+  border: 3px solid #040306;
+  border-radius: 50%;
+  background: var(--yellow);
+}
+
+.machine-panel span:nth-child(3) {
+  background: var(--cyan);
+}
+
+.machine-panel span:nth-child(4) {
+  background: var(--green);
+}
+
+.machine-panel .stick {
+  position: relative;
+  width: 18px;
+  height: 40px;
+  margin-right: auto;
+  border-radius: 3px;
+  background: #040306;
+}
+
+.machine-panel .stick::before {
+  position: absolute;
+  top: -18px;
+  left: -9px;
+  width: 36px;
+  height: 36px;
+  border: 3px solid #040306;
+  border-radius: 50%;
+  content: "";
+  background: var(--pink);
+}
+
+.contact-panel {
+  display: grid;
+  gap: 20px;
+}
+
+.contact-panel h2 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.contact-panel p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.contact-form {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.contact-form label {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #0c0a11;
+  color: var(--text);
+  padding: 12px 13px;
+  resize: vertical;
+}
+
+.contact-form button {
+  min-height: 46px;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--green);
+  color: #071006;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.contact-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.contact-meta span {
+  padding: 10px 12px;
+  border: 1px solid rgba(0, 217, 255, 0.36);
+  border-radius: var(--radius);
+  background: rgba(0, 217, 255, 0.08);
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}

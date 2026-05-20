@@ -1,0 +1,116 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1px solid var(--line);
+  background: rgba(9, 8, 13, 0.88);
+  backdrop-filter: blur(18px);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(var(--max-width), calc(100% - 40px));
+  min-height: 78px;
+  margin: 0 auto;
+  gap: 24px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.brand-symbol {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  image-rendering: pixelated;
+}
+
+.brand-symbol::before {
+  position: absolute;
+  left: 12px;
+  bottom: 5px;
+  width: 5px;
+  height: 32px;
+  content: "";
+  background: var(--text);
+  box-shadow: 4px 0 0 #50485a;
+}
+
+.brand-symbol::after {
+  position: absolute;
+  left: 7px;
+  bottom: 2px;
+  width: 16px;
+  height: 5px;
+  content: "";
+  background: var(--cyan);
+  box-shadow: 0 5px 0 var(--pink);
+}
+
+.brand-flag {
+  position: absolute;
+  left: 17px;
+  top: 6px;
+  width: 22px;
+  height: 18px;
+  background:
+    linear-gradient(90deg, var(--yellow) 0 50%, var(--cyan) 50%),
+    linear-gradient(var(--pink), var(--pink));
+  clip-path: polygon(0 0, 100% 0, 82% 50%, 100% 100%, 0 100%);
+  box-shadow: 4px 4px 0 #000;
+}
+
+.brand-text {
+  display: grid;
+  line-height: 1;
+}
+
+.brand-text strong {
+  font-size: 1.05rem;
+  text-transform: uppercase;
+}
+
+.brand-text small {
+  color: var(--muted);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.main-nav a,
+.header-cta {
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.main-nav a {
+  padding: 10px 12px;
+}
+
+.main-nav a:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.header-cta {
+  padding: 12px 16px;
+  border: 1px solid var(--pink);
+  color: var(--text);
+  box-shadow: 4px 4px 0 rgba(255, 47, 179, 0.5);
+}

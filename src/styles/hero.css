@@ -1,0 +1,129 @@
+.hero {
+  position: relative;
+  display: grid;
+  align-items: center;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.15) contrast(1.05);
+}
+
+.hero::before {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  content: "";
+  background:
+    linear-gradient(90deg, rgba(9, 8, 13, 0.94) 0%, rgba(9, 8, 13, 0.72) 44%, rgba(9, 8, 13, 0.2) 100%),
+    linear-gradient(0deg, rgba(9, 8, 13, 0.88) 0%, transparent 34%);
+}
+
+.hero-scanline {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.05) 0,
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px,
+    transparent 5px
+  );
+  opacity: 0.34;
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.72fr);
+  align-items: center;
+  width: min(var(--max-width), calc(100% - 40px));
+  margin: 0 auto;
+  gap: 48px;
+  padding: 72px 0;
+}
+
+.hero-copy {
+  max-width: 720px;
+}
+
+.hero h1 {
+  max-width: 10ch;
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(4rem, 11vw, 9rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+  text-shadow:
+    6px 6px 0 rgba(255, 47, 179, 0.8),
+    12px 12px 0 rgba(0, 217, 255, 0.45);
+}
+
+.hero-lead {
+  max-width: 680px;
+  margin: 28px 0 0;
+  color: #f2eaf7;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.7;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 34px;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 560px;
+  margin: 44px 0 0;
+  gap: 12px;
+}
+
+.hero-stats div {
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(9, 8, 13, 0.62);
+}
+
+.hero-stats dt {
+  color: var(--yellow);
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.hero-stats dd {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+}
+
+.hero-perks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.hero-perks span {
+  padding: 9px 10px;
+  border: 1px solid rgba(255, 211, 61, 0.38);
+  border-radius: var(--radius);
+  background: rgba(255, 211, 61, 0.1);
+  color: var(--text);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}

@@ -1,0 +1,121 @@
+.arcade-preview {
+  position: relative;
+  width: min(100%, 360px);
+  margin-left: auto;
+  padding: 24px 22px 28px;
+  border: 4px solid #050307;
+  border-radius: 8px 8px 18px 18px;
+  background:
+    linear-gradient(135deg, rgba(255, 47, 179, 0.72), rgba(0, 217, 255, 0.72)),
+    var(--panel);
+  box-shadow:
+    12px 12px 0 rgba(0, 0, 0, 0.52),
+    var(--shadow-neon);
+  transform: rotate(2deg);
+}
+
+.cabinet-top {
+  padding: 12px;
+  border: 3px solid #050307;
+  border-radius: 6px;
+  background: var(--yellow);
+  color: #111;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.cabinet-screen {
+  display: grid;
+  min-height: 190px;
+  margin-top: 18px;
+  place-content: center;
+  border: 8px solid #050307;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(80, 255, 138, 0.45), transparent 7rem),
+    linear-gradient(135deg, #08060d, #19152f);
+  text-align: center;
+}
+
+.screen-flag {
+  position: relative;
+  display: block;
+  width: 96px;
+  height: 96px;
+  image-rendering: pixelated;
+}
+
+.screen-flag::before {
+  position: absolute;
+  left: 28px;
+  bottom: 5px;
+  width: 8px;
+  height: 76px;
+  content: "";
+  background: var(--text);
+  box-shadow: 8px 0 0 #5b5263;
+}
+
+.screen-flag::after {
+  position: absolute;
+  left: 42px;
+  top: 12px;
+  width: 42px;
+  height: 34px;
+  content: "";
+  background: linear-gradient(90deg, var(--yellow) 0 50%, var(--cyan) 50%);
+  clip-path: polygon(0 0, 100% 0, 78% 50%, 100% 100%, 0 100%);
+  box-shadow: 7px 7px 0 #050307;
+}
+
+.cabinet-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+  padding: 16px;
+  border: 3px solid #050307;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.joystick {
+  position: relative;
+  width: 22px;
+  height: 36px;
+  margin-right: auto;
+  background: #111;
+}
+
+.joystick::before {
+  position: absolute;
+  top: -16px;
+  left: -7px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  content: "";
+  background: var(--pink);
+  box-shadow: inset -5px -5px 0 rgba(0, 0, 0, 0.28);
+}
+
+.control-dot {
+  width: 28px;
+  aspect-ratio: 1;
+  border: 3px solid #050307;
+  border-radius: 50%;
+  box-shadow: inset -4px -4px 0 rgba(0, 0, 0, 0.28);
+}
+
+.dot-pink {
+  background: var(--pink);
+}
+
+.dot-yellow {
+  background: var(--yellow);
+}
+
+.dot-cyan {
+  background: var(--cyan);
+}

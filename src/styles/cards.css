@@ -1,0 +1,168 @@
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.game-card {
+  display: grid;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--panel-bright), var(--panel));
+  overflow: hidden;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.24);
+}
+
+.game-cover {
+  position: relative;
+  min-height: 220px;
+  overflow: hidden;
+  background: var(--panel);
+}
+
+.game-cover::before,
+.game-cover::after {
+  position: absolute;
+  content: "";
+}
+
+.game-cover::before {
+  inset: 18px;
+  border: 3px solid rgba(255, 255, 255, 0.72);
+  border-radius: 8px;
+}
+
+.game-cover::after {
+  right: 22px;
+  bottom: 22px;
+  width: 64px;
+  aspect-ratio: 1;
+  background: var(--yellow);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.26);
+}
+
+.cover-peak {
+  background:
+    linear-gradient(135deg, transparent 0 46%, rgba(255, 255, 255, 0.9) 46% 50%, transparent 50%),
+    radial-gradient(circle at 35% 35%, var(--pink), transparent 5rem),
+    linear-gradient(145deg, #260714, #11101c);
+}
+
+.cover-repo {
+  background:
+    linear-gradient(90deg, rgba(80, 255, 138, 0.28) 12px, transparent 12px),
+    linear-gradient(0deg, rgba(255, 211, 61, 0.36) 12px, transparent 12px),
+    radial-gradient(circle at 55% 45%, var(--yellow), transparent 6rem),
+    #102417;
+  background-size: 34px 34px, 34px 34px, auto, auto;
+}
+
+.cover-schedule {
+  background:
+    radial-gradient(circle at 50% 42%, #ff7a2f 0 3rem, transparent 3.1rem),
+    linear-gradient(45deg, transparent 0 42%, rgba(255, 47, 179, 0.82) 42% 58%, transparent 58%),
+    #201029;
+}
+
+.cover-content {
+  background:
+    radial-gradient(circle at 24% 30%, var(--cyan) 0 0.3rem, transparent 0.36rem),
+    radial-gradient(circle at 68% 28%, var(--yellow) 0 0.25rem, transparent 0.32rem),
+    radial-gradient(circle at 46% 64%, var(--pink) 0 0.28rem, transparent 0.34rem),
+    radial-gradient(circle at 50% 48%, rgba(0, 217, 255, 0.5), transparent 7rem),
+    #090814;
+}
+
+.cover-orbit {
+  position: absolute;
+  left: 26px;
+  top: 30px;
+  width: 118px;
+  height: 118px;
+  border: 3px solid rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
+}
+
+.cover-pixels {
+  position: absolute;
+  left: 42px;
+  bottom: 38px;
+  width: 18px;
+  height: 18px;
+  background: var(--green);
+  box-shadow:
+    24px 0 0 var(--cyan),
+    48px 0 0 var(--pink),
+    24px 24px 0 var(--yellow),
+    72px 24px 0 var(--green);
+}
+
+.game-info {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.card-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.card-topline strong {
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: var(--pink);
+  color: #fff;
+}
+
+.game-info h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.game-info p {
+  min-height: 40px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.game-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.game-price {
+  color: var(--yellow);
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.game-bottom a {
+  min-height: 38px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--cyan);
+  color: #061015;
+  padding: 0 12px;
+  font-size: 0.76rem;
+  font-weight: 900;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  text-transform: uppercase;
+}

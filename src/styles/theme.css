@@ -1,0 +1,26 @@
+:root {
+  color-scheme: dark;
+  --bg: #09080d;
+  --bg-soft: #121018;
+  --panel: #19151f;
+  --panel-bright: #241b2b;
+  --text: #fff8e8;
+  --muted: #bcb4c8;
+  --line: rgba(255, 255, 255, 0.16);
+  --pink: #ff2fb3;
+  --cyan: #00d9ff;
+  --yellow: #ffd33d;
+  --green: #50ff8a;
+  --orange: #ff7a2f;
+  --radius: 8px;
+  --shadow-neon: 0 0 22px rgba(0, 217, 255, 0.34);
+  --max-width: 1180px;
+  font-family:
+    "Space Mono",
+    "IBM Plex Mono",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+}
