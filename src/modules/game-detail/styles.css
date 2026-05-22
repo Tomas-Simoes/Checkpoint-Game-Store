@@ -1,0 +1,390 @@
+.app-shell-detail {
+  scroll-snap-type: none;
+}
+
+.game-detail-page {
+  min-height: calc(100svh - 78px);
+  padding: 72px 0;
+  background:
+    linear-gradient(135deg, rgba(255, 47, 179, 0.14), transparent 28%),
+    linear-gradient(315deg, rgba(0, 217, 255, 0.12), transparent 30%),
+    var(--bg);
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 46px;
+}
+
+.detail-back {
+  grid-column: 1 / -1;
+  justify-self: start;
+  color: var(--green);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.detail-cover-wrap {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 14px;
+  box-shadow: 18px 18px 0 rgba(0, 0, 0, 0.28);
+}
+
+.detail-cover {
+  min-height: clamp(340px, 50vw, 560px);
+  border-radius: 6px;
+}
+
+.detail-copy {
+  min-width: 0;
+}
+
+.detail-topline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.detail-topline strong {
+  padding: 6px 9px;
+  border-radius: 6px;
+  background: var(--pink);
+  color: #fff;
+}
+
+.detail-copy h1 {
+  margin: 12px 0 0;
+  font-size: clamp(3.2rem, 8vw, 7rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+  text-shadow:
+    4px 4px 0 rgba(255, 47, 179, 0.65),
+    8px 8px 0 rgba(0, 217, 255, 0.32);
+}
+
+.detail-lead {
+  margin: 24px 0 0;
+  color: #f2eaf7;
+  font-size: clamp(1rem, 2vw, 1.24rem);
+  line-height: 1.65;
+}
+
+.detail-description {
+  margin: 16px 0 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.detail-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.detail-stats div,
+.detail-specs div {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.detail-stats div {
+  padding: 14px;
+}
+
+.detail-stats span,
+.detail-specs dt {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.detail-stats strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--yellow);
+  font-size: 1rem;
+}
+
+.detail-specs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 16px 0 0;
+}
+
+.detail-specs div {
+  padding: 12px 14px;
+}
+
+.detail-specs dd {
+  margin: 5px 0 0;
+  color: var(--text);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.detail-tags span {
+  padding: 8px 10px;
+  border: 1px solid rgba(0, 217, 255, 0.36);
+  border-radius: 6px;
+  background: rgba(0, 217, 255, 0.08);
+  color: var(--text);
+  font-size: 0.74rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.purchase-panel {
+  margin-top: 30px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.purchase-panel-heading {
+  margin-bottom: 16px;
+}
+
+.purchase-panel-heading h2 {
+  margin: 6px 0 0;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+}
+
+.purchase-muted {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.purchase-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.purchase-form label {
+  min-width: 0;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.purchase-form input,
+.purchase-form select {
+  width: 100%;
+  margin-top: 7px;
+  padding: 11px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.24);
+  color: var(--text);
+  font: inherit;
+}
+
+.purchase-form input:read-only,
+.purchase-form select:disabled {
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+.purchase-form-wide,
+.purchase-error,
+.purchase-submit {
+  grid-column: 1 / -1;
+}
+
+.purchase-error {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 47, 179, 0.5);
+  border-radius: 6px;
+  background: rgba(255, 47, 179, 0.12);
+  color: #ffd7f3;
+  font-weight: 800;
+}
+
+.purchase-result {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0 0 16px;
+}
+
+.purchase-result div {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.purchase-result dt {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.purchase-result dd {
+  margin: 6px 0 0;
+  color: var(--text);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.purchase-result code {
+  color: var(--green);
+  font-size: 0.92rem;
+}
+
+.invoice-preview {
+  display: grid;
+  gap: 14px;
+  margin: 18px 0;
+  overflow-x: auto;
+  padding: 14px;
+  border: 1px solid rgba(0, 217, 255, 0.32);
+  border-radius: var(--radius);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.invoice-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.invoice-heading span,
+.invoice-meta dt,
+.invoice-table th {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.invoice-heading strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--yellow);
+}
+
+.invoice-heading button {
+  min-height: 36px;
+  border: 1px solid var(--cyan);
+  border-radius: 6px;
+  background: rgba(0, 217, 255, 0.1);
+  color: var(--text);
+  padding: 0 11px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.invoice-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.invoice-meta div {
+  min-width: 0;
+}
+
+.invoice-meta dd {
+  margin: 4px 0 0;
+  color: var(--text);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.invoice-table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+}
+
+.invoice-table th,
+.invoice-table td {
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+.invoice-table td {
+  color: var(--text);
+  font-size: 0.82rem;
+}
+
+.invoice-total {
+  margin: 0;
+  color: var(--text);
+  font-weight: 900;
+  text-align: right;
+}
+
+.invoice-total strong {
+  color: var(--green);
+}
+
+@media (max-width: 980px) {
+  .detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .game-detail-page {
+    padding: 52px 0;
+  }
+
+  .detail-specs,
+  .detail-stats,
+  .invoice-meta,
+  .purchase-form,
+  .purchase-result {
+    grid-template-columns: 1fr;
+  }
+
+  .invoice-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+}

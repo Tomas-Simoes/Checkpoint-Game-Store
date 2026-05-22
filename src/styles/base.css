@@ -101,3 +101,53 @@ button {
   width: min(var(--max-width), calc(100% - 40px));
   margin: 0 auto;
 }
+
+.section-heading {
+  display: grid;
+  max-width: 760px;
+  gap: 12px;
+  margin-bottom: 34px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.section-heading p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.catalog-status {
+  margin: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(25, 21, 31, 0.72);
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 720px) {
+  .app-shell {
+    scroll-padding-top: 70px;
+  }
+
+  .snap-section {
+    min-height: calc(100svh - 70px);
+  }
+}
+
+@media (max-width: 430px) {
+  .section-inner {
+    width: min(100% - 28px, var(--max-width));
+  }
+
+  .button {
+    width: 100%;
+  }
+}

@@ -1,4 +1,14 @@
+import { useState } from "react";
+
 export function ContactSection() {
+  const [messageSent, setMessageSent] = useState(false);
+
+  function submitContact(event) {
+    event.preventDefault();
+    event.currentTarget.reset();
+    setMessageSent(true);
+  }
+
   return (
     <section className="contact-section snap-section" id="contacto">
       <div className="section-inner contact-layout">
@@ -23,11 +33,15 @@ export function ContactSection() {
             Reservas, usados, retrogaming, encomendas especiais ou aquela dúvida
             sobre qual jogo levar para a próxima noite com amigos.
           </p>
+          <p className="contact-email-note">
+            Ao enviares o formulário, é enviado um email para a equipa da
+            Checkpoint através de hello@checkpoint.pt.
+          </p>
 
           <form
             className="contact-form"
             aria-label="Formulário de contacto"
-            onSubmit={(event) => event.preventDefault()}
+            onSubmit={submitContact}
           >
             <div className="form-grid">
               <label>
@@ -47,6 +61,11 @@ export function ContactSection() {
               Mensagem
               <textarea rows="4" placeholder="Diz-nos o que procuras" />
             </label>
+            {messageSent && (
+              <p className="contact-form-success" role="status">
+                Email enviado para a equipa da Checkpoint.
+              </p>
+            )}
             <button type="submit">Enviar mensagem</button>
           </form>
 

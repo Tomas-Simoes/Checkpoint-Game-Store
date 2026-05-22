@@ -1,7 +1,25 @@
-import { perks } from "../data/games.js";
-import heroImage from "../assets/arcade-hero.png";
+import { useEffect, useState } from "react";
+import { shopApi } from "../../../api/shopApi.js";
+import heroImage from "../../../assets/arcade-hero.png";
 
 export function Hero() {
+  const [perks, setPerks] = useState([]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    shopApi
+      .getPerks({ signal: controller.signal })
+      .then(setPerks)
+      .catch((error) => {
+        if (error.name !== "AbortError") {
+          setPerks([]);
+        }
+      });
+
+    return () => controller.abort();
+  }, []);
+
   return (
     <section className="hero snap-section" id="home">
       <img className="hero-bg" src={heroImage} alt="" aria-hidden="true" />
@@ -16,7 +34,7 @@ export function Hero() {
             sabem a fichas, ecrãs CRT e noites de fliperama.
           </p>
           <div className="hero-actions" aria-label="Ações principais">
-            <a className="button button-primary" href="#catalogo">
+            <a className="button button-primary" href="#/catalogo">
               Ver catálogo
             </a>
             <a className="button button-secondary" href="#contacto">
@@ -37,11 +55,13 @@ export function Hero() {
               <dd>energia retro</dd>
             </div>
           </dl>
-          <div className="hero-perks" aria-label="Vantagens da loja">
-            {perks.map((perk) => (
-              <span key={perk}>{perk}</span>
-            ))}
-          </div>
+          {perks.length > 0 && (
+            <div className="hero-perks" aria-label="Vantagens da loja">
+              {perks.map((perk) => (
+                <span key={perk}>{perk}</span>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="arcade-preview" aria-hidden="true">

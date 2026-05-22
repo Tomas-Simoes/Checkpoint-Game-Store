@@ -1,0 +1,96 @@
+.error-page {
+  display: grid;
+  min-height: calc(100svh - 78px);
+  align-items: center;
+  padding: 72px 0;
+  background:
+    linear-gradient(135deg, rgba(255, 47, 179, 0.16), transparent 30%),
+    linear-gradient(315deg, rgba(0, 217, 255, 0.12), transparent 34%),
+    var(--bg);
+}
+
+.error-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.55fr);
+  align-items: center;
+  gap: 48px;
+}
+
+.error-copy {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+}
+
+.error-copy h1 {
+  margin: 0;
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+  text-shadow:
+    5px 5px 0 rgba(255, 47, 179, 0.7),
+    10px 10px 0 rgba(0, 217, 255, 0.34);
+}
+
+.error-copy p {
+  max-width: 680px;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.error-copy code {
+  display: block;
+  max-width: 720px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.07);
+  color: #ffd0ea;
+  overflow-wrap: anywhere;
+}
+
+.error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.error-screen {
+  display: grid;
+  min-height: 320px;
+  place-content: center;
+  border: 5px solid #040306;
+  border-radius: 8px;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.07) 0 2px, transparent 2px 6px),
+    radial-gradient(circle, rgba(255, 47, 179, 0.38), transparent 8rem),
+    #11101a;
+  box-shadow: 16px 16px 0 rgba(0, 0, 0, 0.42);
+  text-align: center;
+}
+
+.error-screen span {
+  color: var(--yellow);
+  font-size: clamp(4rem, 12vw, 8rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.error-screen strong {
+  color: var(--green);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .error-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .error-page {
+    padding: 52px 0;
+  }
+}
