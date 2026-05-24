@@ -14,6 +14,12 @@ import {
 import { AuthContext } from "./authContext.js";
 
 function readErrorMessage(error) {
+  const fieldMessages = Object.values(error?.data?.fields ?? {}).filter(Boolean);
+
+  if (fieldMessages.length > 0) {
+    return fieldMessages.join(" ");
+  }
+
   return (
     error?.data?.message ??
     error?.message ??

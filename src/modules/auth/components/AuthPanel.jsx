@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../authContext.js";
 
-const hasApiBaseUrl = Boolean(import.meta.env.VITE_API_BASE_URL);
+const hasApiBaseUrl = Boolean(
+  import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL
+);
 const loginForm = {
   email: hasApiBaseUrl ? "" : "player@checkpoint.pt",
   name: "",
   password: hasApiBaseUrl ? "" : "checkpoint123"
 };
 const registerForm = {
+  address: "",
   email: "",
   name: "",
   password: ""
@@ -23,12 +26,16 @@ function validateAuthForm(form, isRegisterMode) {
     return "Indica um email válido.";
   }
 
-  if (password.length < 6) {
-    return "A palavra-passe deve ter pelo menos 6 caracteres.";
+  if (password.length < 8) {
+    return "A palavra-passe deve ter pelo menos 8 caracteres.";
   }
 
   if (isRegisterMode && name.length < 2) {
     return "Indica um nome com pelo menos 2 caracteres.";
+  }
+
+  if (isRegisterMode && !form.address.trim()) {
+    return "Indica uma morada.";
   }
 
   return "";
@@ -132,6 +139,20 @@ export function AuthPanel({ onAuthenticated, titleId = "auth-panel-title" }) {
           </label>
         )}
 
+        {isRegisterMode && (
+          <label>
+            Morada
+            <input
+              autoComplete="street-address"
+              onChange={(event) => updateField("address", event.target.value)}
+              placeholder="Rua, numero e localidade"
+              required
+              type="text"
+              value={form.address}
+            />
+          </label>
+        )}
+
         <label>
           Email
           <input
@@ -149,9 +170,9 @@ export function AuthPanel({ onAuthenticated, titleId = "auth-panel-title" }) {
           Palavra-passe
           <input
             autoComplete={isRegisterMode ? "new-password" : "current-password"}
-            minLength={6}
+            minLength={8}
             onChange={(event) => updateField("password", event.target.value)}
-            placeholder="6 caracteres ou mais"
+            placeholder="8 caracteres ou mais"
             required
             type="password"
             value={form.password}

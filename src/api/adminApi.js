@@ -1,113 +1,288 @@
 import { apiClient } from "./apiClient.js";
-import {
-  mockCreateProduct,
-  mockDeleteProduct,
-  mockListProducts,
-  mockListSales,
-  mockUpdateProduct,
-  mockUpdateProductStock,
-  mockUpdateSaleStatus
-} from "./mocks/adminMock.js";
-import {
-  mockDeleteUser,
-  mockListUsers,
-  mockRevokeSession,
-  mockRevokeUserSessions
-} from "./mocks/authMock.js";
-import {
-  mockGetInvoice,
-  mockListInvoices
-} from "./mocks/purchasesMock.js";
+
+function slugify(value) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function formatDate(value) {
+  if (!value) {
+    return "";
+  }
+
+  return new Date(value).toISOString().slice(0, 10);
+}
+
+function toProductView(product) {
+  return {
+    category: product.categoryName,
+    categoryId: product.categoryId,
+    id: product.id,
+    imageUrl: product.imageUrl,
+    price: Number(product.price ?? 0),
+    sku: slugify(product.name),
+    sold: 0,
+    status: product.active ? (product.stock > 0 ? "Ativo" : "Sem stock") : "Arquivado",
+    stock: product.stock,
+    title: product.name
+  };
+}
+
+function toSaleStatusLabel(status) {
+  if (status === "DELIVERED") {
+    return "Enviado";
+  }
+
+  if (status === "CANCELLED") {
+    return "Cancelado";
+  }
+
+  return "Pendente";
+}
+
+function toSaleStatusValue(status) {
+  if (status === "Enviado" || status === "Pago") {
+    return "DELIVERED";
+  }
+
+  if (status === "Cancelado") {
+    return "CANCELLED";
+  }
+
+  return "PENDING_DELIVERY";
+}
+
+function getSaleQuantity(sale) {
+  return sale.items.reduce((total, item) => total + item.quantity, 0);
+}
+
+function getSaleProductTitle(sale) {
+  return sale.items.map((item) => item.productName).join(", ");
+}
+
+function toSaleView(sale) {
+  const firstItem = sale.items[0];
+
+  return {
+    customer: sale.customerName,
+    customerId: sale.customerId,
+    date: formatDate(sale.saleDate),
+    delivery: sale.deliveryAddress,
+    id: sale.id,
+    invoiceId: sale.id,
+    invoiceNumber: sale.invoiceNumber,
+    paymentMethod: sale.paymentMethod,
+    productId: firstItem?.productId,
+    productTitle: getSaleProductTitle(sale),
+    quantity: getSaleQuantity(sale),
+    status: toSaleStatusLabel(sale.status),
+    total: Number(sale.total ?? 0)
+  };
+}
+
+function getPaymentStatus(status) {
+  return status === "Enviado" ? "Pago na entrega" : "Por cobrar na entrega";
+}
+
+function toInvoiceView(sale) {
+  return {
+    customer: {
+      email: "",
+      name: sale.customer
+    },
+    delivery: sale.delivery,
+    id: sale.id,
+    issuedAt: sale.date ? `${sale.date}T12:00:00.000Z` : null,
+    items: [
+      {
+        description: sale.productTitle,
+        productId: sale.productId,
+        quantity: sale.quantity,
+        total: sale.total,
+        unitPrice: sale.quantity > 0 ? sale.total / sale.quantity : sale.total
+      }
+    ],
+    number: sale.invoiceNumber,
+    paymentMethod: sale.paymentMethod,
+    paymentStatus: getPaymentStatus(sale.status),
+    saleId: sale.id,
+    total: sale.total
+  };
+}
+
+function toUserView(user) {
+  return {
+    activeSessions: 0,
+    canDelete: user.role !== "ADMIN",
+    createdAt: user.createdAt,
+    email: user.email,
+    id: user.id,
+    isSeedUser: user.email === "admin@checkpoint.local",
+    name: user.name,
+    role: String(user.role ?? "").toLowerCase(),
+    sessions: []
+  };
+}
+
+async function getCategories(options = {}) {
+  return apiClient.get("/categories", options);
+}
+
+async function getCategoryId(categoryName, options = {}) {
+  const normalizedName = categoryName.trim();
+  const categories = await getCategories(options);
+  const existingCategory = categories.find(
+    (category) => category.name.toLowerCase() === normalizedName.toLowerCase()
+  );
+
+  if (existingCategory) {
+    return existingCategory.id;
+  }
+
+  const category = await apiClient.post(
+    "/categories",
+    {
+      description: `${normalizedName} da loja Checkpoint.`,
+      name: normalizedName
+    },
+    options
+  );
+
+  return category.id;
+}
+
+async function getProductPayload(product, options = {}, existingProduct = null) {
+  const categoryId = await getCategoryId(product.category, options);
+  const title = product.title.trim();
+
+  return {
+    active: product.status !== "Arquivado",
+    categoryId,
+    description: existingProduct?.description || `${title} disponivel na Checkpoint.`,
+    imageUrl: existingProduct?.imageUrl || product.imageUrl || "",
+    name: title,
+    price: Number(product.price),
+    stock: Number(product.stock)
+  };
+}
+
+async function getBackendProduct(productId, options = {}) {
+  return apiClient.get(`/products/${productId}`, options);
+}
+
+async function getSales(options = {}) {
+  const sales = await apiClient.get("/sales", options);
+  return sales.map(toSaleView);
+}
 
 export const adminApi = {
-  createProduct(product, options = {}) {
-    return apiClient.post("/admin/products", product, {
-      fallbackData: () => mockCreateProduct(product),
-      ...options
-    });
+  async createProduct(product, options = {}) {
+    const payload = await getProductPayload(product, options);
+    const createdProduct = await apiClient.post("/products", payload, options);
+    return toProductView(createdProduct);
   },
 
   deleteProduct(productId, options = {}) {
-    return apiClient.delete(`/admin/products/${productId}`, {
-      fallbackData: () => mockDeleteProduct(productId),
-      ...options
-    });
+    return apiClient.delete(`/products/${productId}`, options);
   },
 
-  getProducts(options = {}) {
-    return apiClient.get("/admin/products", {
-      fallbackData: mockListProducts,
-      ...options
+  async getProducts(options = {}) {
+    const products = await apiClient.get("/products", {
+      ...options,
+      params: {
+        includeInactive: true,
+        ...options.params
+      }
     });
+
+    return products.map(toProductView);
   },
 
-  getSales(options = {}) {
-    return apiClient.get("/admin/sales", {
-      fallbackData: mockListSales,
-      ...options
-    });
+  getSales,
+
+  async getUsers(options = {}) {
+    const users = await apiClient.get("/customers", options);
+    return users.map(toUserView);
   },
 
-  getUsers(options = {}) {
-    return apiClient.get("/admin/users", {
-      fallbackData: mockListUsers,
-      ...options
-    });
+  async getInvoices(options = {}) {
+    const sales = await getSales(options);
+    return sales.map(toInvoiceView);
   },
 
-  getInvoices(options = {}) {
-    return apiClient.get("/admin/invoices", {
-      fallbackData: mockListInvoices,
-      ...options
-    });
-  },
+  async getInvoice(invoiceId, options = {}) {
+    const invoice = await apiClient.get(`/invoices/sales/${invoiceId}`, options);
 
-  getInvoice(invoiceId, options = {}) {
-    return apiClient.get(`/admin/invoices/${invoiceId}`, {
-      fallbackData: () => mockGetInvoice(invoiceId),
-      ...options
-    });
+    return {
+      customer: {
+        email: invoice.customerEmail,
+        name: invoice.customerName
+      },
+      delivery: invoice.billingAddress,
+      id: invoice.saleId,
+      issuedAt: invoice.issuedAt,
+      items: invoice.items.map((item) => ({
+        description: item.productName,
+        productId: item.productName,
+        quantity: item.quantity,
+        total: Number(item.lineTotal ?? 0),
+        unitPrice: Number(item.unitPrice ?? 0)
+      })),
+      number: invoice.invoiceNumber,
+      paymentMethod: invoice.paymentMethod,
+      paymentStatus: "Por cobrar na entrega",
+      saleId: invoice.saleId,
+      total: Number(invoice.total ?? 0)
+    };
   },
 
   deleteUser(userId, options = {}) {
-    return apiClient.delete(`/admin/users/${userId}`, {
-      fallbackData: () => mockDeleteUser(userId),
-      ...options
-    });
+    return apiClient.delete(`/customers/${userId}`, options);
   },
 
-  revokeSession(sessionId, options = {}) {
-    return apiClient.post(`/admin/sessions/${sessionId}/revoke`, undefined, {
-      fallbackData: () => mockRevokeSession(sessionId),
-      ...options
-    });
+  revokeSession() {
+    return Promise.resolve({ success: true });
   },
 
-  revokeUserSessions(userId, options = {}) {
-    return apiClient.post(`/admin/users/${userId}/revoke-sessions`, undefined, {
-      fallbackData: () => mockRevokeUserSessions(userId),
-      ...options
-    });
+  revokeUserSessions() {
+    return Promise.resolve({ success: true });
   },
 
-  updateProduct(productId, updates, options = {}) {
-    return apiClient.patch(`/admin/products/${productId}`, updates, {
-      fallbackData: () => mockUpdateProduct(productId, updates),
-      ...options
-    });
+  async updateProduct(productId, updates, options = {}) {
+    const existingProduct = await getBackendProduct(productId, options);
+    const payload = await getProductPayload(updates, options, existingProduct);
+    const updatedProduct = await apiClient.put(`/products/${productId}`, payload, options);
+    return toProductView(updatedProduct);
   },
 
-  updateProductStock(productId, stock, options = {}) {
-    return apiClient.patch(`/admin/products/${productId}/stock`, { stock }, {
-      fallbackData: () => mockUpdateProductStock(productId, stock),
-      ...options
-    });
+  async updateProductStock(productId, stock, options = {}) {
+    const existingProduct = await getBackendProduct(productId, options);
+    const payload = {
+      active: existingProduct.active,
+      categoryId: existingProduct.categoryId,
+      description: existingProduct.description,
+      imageUrl: existingProduct.imageUrl,
+      name: existingProduct.name,
+      price: Number(existingProduct.price),
+      stock
+    };
+    const updatedProduct = await apiClient.put(`/products/${productId}`, payload, options);
+    return toProductView(updatedProduct);
   },
 
-  updateSaleStatus(saleId, status, options = {}) {
-    return apiClient.patch(`/admin/sales/${saleId}`, { status }, {
-      fallbackData: () => mockUpdateSaleStatus(saleId, status),
-      ...options
-    });
+  async updateSaleStatus(saleId, status, options = {}) {
+    const updatedSale = await apiClient.patch(
+      `/sales/${saleId}/status`,
+      {
+        status: toSaleStatusValue(status)
+      },
+      options
+    );
+
+    return toSaleView(updatedSale);
   }
 };

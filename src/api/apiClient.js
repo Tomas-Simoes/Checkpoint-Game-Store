@@ -1,4 +1,8 @@
-const DEFAULT_API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "";
+const DEFAULT_API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ??
+  (import.meta.env.VITE_API_URL
+    ? `${import.meta.env.VITE_API_URL.replace(/\/+$/, "")}/api`
+    : "");
 const ENABLE_MOCK_FALLBACK =
   import.meta.env.VITE_ENABLE_MOCK_FALLBACK === "true";
 
@@ -84,6 +88,30 @@ async function parseResponse(response) {
   return response.text();
 }
 
+function getApiErrorMessage(data) {
+  if (data && typeof data === "object") {
+    const fieldMessages = Object.values(data.fields ?? {}).filter(Boolean);
+
+    if (fieldMessages.length > 0) {
+      return fieldMessages.join(" ");
+    }
+
+    return (
+      data.message ??
+      data.error ??
+      data.detail ??
+      data.title ??
+      "Pedido a API falhou."
+    );
+  }
+
+  if (typeof data === "string" && data.trim()) {
+    return data;
+  }
+
+  return "Pedido a API falhou.";
+}
+
 export function setApiAuthToken(token) {
   apiAuthToken = token;
 }
@@ -143,7 +171,7 @@ export function createApiClient({ baseUrl = DEFAULT_API_BASE_URL } = {}) {
     }
 
     if (!response.ok) {
-      const error = new ApiError("Pedido à API falhou.", {
+      const error = new ApiError(getApiErrorMessage(data), {
         data,
         status: response.status
       });
