@@ -1,9 +1,11 @@
 package com.checkpoint.store.product;
 
+import com.checkpoint.store.common.validation.SafeText;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
+@Validated
 public class ProductController {
 
     private final ProductService productService;
@@ -30,7 +33,7 @@ public class ProductController {
     @GetMapping
     public List<ProductResponse> search(
             @RequestParam(required = false) Long categoryId,
-            @RequestParam(required = false) String search,
+            @RequestParam(required = false) @SafeText String search,
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice,
             @RequestParam(required = false) Boolean inStock,

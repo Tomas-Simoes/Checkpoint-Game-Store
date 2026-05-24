@@ -1,5 +1,7 @@
 package com.checkpoint.store.product;
 
+import com.checkpoint.store.common.validation.SafeImageSource;
+import com.checkpoint.store.common.validation.SafeText;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,10 +13,12 @@ import java.math.BigDecimal;
 public record ProductRequest(
         @NotBlank(message = "O nome do produto é obrigatório.")
         @Size(max = 180, message = "O nome do produto não pode ultrapassar 180 caracteres.")
+        @SafeText
         String name,
 
         @NotBlank(message = "A descrição do produto é obrigatória.")
         @Size(max = 1000, message = "A descrição não pode ultrapassar 1000 caracteres.")
+        @SafeText
         String description,
 
         @NotNull(message = "O preço é obrigatório.")
@@ -25,6 +29,7 @@ public record ProductRequest(
         int stock,
 
         @Size(max = 600, message = "O URL/imagem não pode ultrapassar 600 caracteres.")
+        @SafeImageSource
         String imageUrl,
 
         @NotNull(message = "A categoria é obrigatória.")

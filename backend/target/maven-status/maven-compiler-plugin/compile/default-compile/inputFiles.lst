@@ -13,6 +13,11 @@ C:\Users\Rafael Gomes\Desktop\Checkpoint-Game-Store\backend\src\main\java\com\ch
 C:\Users\Rafael Gomes\Desktop\Checkpoint-Game-Store\backend\src\main\java\com\checkpoint\store\common\BusinessException.java
 C:\Users\Rafael Gomes\Desktop\Checkpoint-Game-Store\backend\src\main\java\com\checkpoint\store\common\GlobalExceptionHandler.java
 C:\Users\Rafael Gomes\Desktop\Checkpoint-Game-Store\backend\src\main\java\com\checkpoint\store\common\NotFoundException.java
+C:\Users\Rafael Gomes\Desktop\Checkpoint-Game-Store\backend\src\main\java\com\checkpoint\store\common\validation\SafeImageSource.java
+C:\Users\Rafael Gomes\Desktop\Checkpoint-Game-Store\backend\src\main\java\com\checkpoint\store\common\validation\SafeImageSourceValidator.java
+C:\Users\Rafael Gomes\Desktop\Checkpoint-Game-Store\backend\src\main\java\com\checkpoint\store\common\validation\SafeText.java
+C:\Users\Rafael Gomes\Desktop\Checkpoint-Game-Store\backend\src\main\java\com\checkpoint\store\common\validation\SafeTextValidator.java
+C:\Users\Rafael Gomes\Desktop\Checkpoint-Game-Store\backend\src\main\java\com\checkpoint\store\common\validation\SecurityTextChecks.java
 C:\Users\Rafael Gomes\Desktop\Checkpoint-Game-Store\backend\src\main\java\com\checkpoint\store\config\DataSeeder.java
 C:\Users\Rafael Gomes\Desktop\Checkpoint-Game-Store\backend\src\main\java\com\checkpoint\store\config\OpenApiConfig.java
 C:\Users\Rafael Gomes\Desktop\Checkpoint-Game-Store\backend\src\main\java\com\checkpoint\store\config\SecurityConfig.java
