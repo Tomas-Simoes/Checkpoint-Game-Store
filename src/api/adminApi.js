@@ -32,6 +32,56 @@ function toProductView(product) {
   };
 }
 
+function toProductStatsView(product) {
+  return {
+    id: product.productId,
+    revenue: Number(product.revenue ?? 0),
+    sold: Number(product.unitsSold ?? 0),
+    title: product.productName
+  };
+}
+
+function toCustomerStatsView(customer) {
+  return {
+    customer: customer.customerName,
+    email: customer.email,
+    orders: Number(customer.totalOrders ?? 0),
+    total: Number(customer.totalSpent ?? 0)
+  };
+}
+
+function formatRevenuePeriod(period, groupBy) {
+  if (!period) {
+    return "";
+  }
+
+  if (groupBy === "month") {
+    const [year, month] = period.split("-").map(Number);
+    return new Intl.DateTimeFormat("pt-PT", {
+      month: "long",
+      year: "numeric"
+    }).format(new Date(year, month - 1, 1));
+  }
+
+  if (groupBy === "week") {
+    return period;
+  }
+
+  return new Intl.DateTimeFormat("pt-PT", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  }).format(new Date(`${period}T12:00:00`));
+}
+
+function toRevenuePeriodView(bucket, groupBy) {
+  return {
+    label: formatRevenuePeriod(bucket.period, groupBy),
+    orders: Number(bucket.orders ?? 0),
+    total: Number(bucket.total ?? 0)
+  };
+}
+
 function toSaleStatusLabel(status) {
   if (status === "DELIVERED") {
     return "Enviado";
@@ -179,6 +229,50 @@ async function getSales(options = {}) {
   return sales.map(toSaleView);
 }
 
+async function getStats(revenuePeriod = "day", options = {}) {
+  const groupBy = revenuePeriod.toUpperCase();
+
+  const [topProducts, leastSoldProducts, bestClients, revenue] = await Promise.all([
+    apiClient.get("/stats/products/top", {
+      ...options,
+      params: {
+        limit: 5,
+        ...options.params
+      }
+    }),
+    apiClient.get("/stats/products/least", {
+      ...options,
+      params: {
+        limit: 5,
+        ...options.params
+      }
+    }),
+    apiClient.get("/stats/customers/top", {
+      ...options,
+      params: {
+        limit: 5,
+        ...options.params
+      }
+    }),
+    apiClient.get("/stats/revenue", {
+      ...options,
+      params: {
+        groupBy,
+        ...options.params
+      }
+    })
+  ]);
+
+  return {
+    bestClients: bestClients.map(toCustomerStatsView),
+    leastSoldProducts: leastSoldProducts.map(toProductStatsView),
+    revenueByPeriod: revenue.buckets.map((bucket) =>
+      toRevenuePeriodView(bucket, revenuePeriod)
+    ),
+    topSoldProducts: topProducts.map(toProductStatsView)
+  };
+}
+
 export const adminApi = {
   async createProduct(product, options = {}) {
     const payload = await getProductPayload(product, options);
@@ -203,6 +297,8 @@ export const adminApi = {
   },
 
   getSales,
+
+  getStats,
 
   async getUsers(options = {}) {
     const users = await apiClient.get("/customers", options);

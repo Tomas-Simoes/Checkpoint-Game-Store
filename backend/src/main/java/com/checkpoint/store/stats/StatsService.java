@@ -59,16 +59,26 @@ public class StatsService {
         Instant end = effectiveTo.plusDays(1).atStartOfDay(zone).toInstant();
         List<Sale> sales = saleRepository.findBySaleDateBetweenAndStatusNot(start, end, SaleStatus.CANCELLED);
 
-        Map<String, BigDecimal> grouped = sales.stream()
+        Map<String, RevenueAccumulator> grouped = sales.stream()
                 .collect(Collectors.groupingBy(
                         sale -> bucketFor(sale, effectiveGroup, zone),
                         TreeMap::new,
-                        Collectors.reducing(BigDecimal.ZERO, Sale::getTotal, BigDecimal::add)
+                        Collectors.reducing(
+                                RevenueAccumulator.empty(),
+                                sale -> new RevenueAccumulator(1, sale.getTotal()),
+                                RevenueAccumulator::combine
+                        )
                 ));
 
-        BigDecimal total = grouped.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal total = grouped.values().stream()
+                .map(RevenueAccumulator::total)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
         List<RevenueBucketResponse> buckets = grouped.entrySet().stream()
-                .map(entry -> new RevenueBucketResponse(entry.getKey(), entry.getValue()))
+                .map(entry -> new RevenueBucketResponse(
+                        entry.getKey(),
+                        entry.getValue().orders(),
+                        entry.getValue().total()
+                ))
                 .sorted(Comparator.comparing(RevenueBucketResponse::period))
                 .toList();
 
@@ -94,5 +104,16 @@ public class StatsService {
             return 1;
         }
         return Math.min(limit, 50);
+    }
+
+    private record RevenueAccumulator(long orders, BigDecimal total) {
+
+        static RevenueAccumulator empty() {
+            return new RevenueAccumulator(0, BigDecimal.ZERO);
+        }
+
+        RevenueAccumulator combine(RevenueAccumulator other) {
+            return new RevenueAccumulator(orders + other.orders, total.add(other.total));
+        }
     }
 }

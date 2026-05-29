@@ -18,6 +18,48 @@ Clone the repository and open it in a terminal:
 cd Checkpoint-Game-Store
 ```
 
+## One-command Install and Run
+
+On Linux/macOS:
+
+```bash
+./scripts/setup-and-run.sh
+```
+
+Or through npm:
+
+```bash
+npm run setup:run
+```
+
+On Windows PowerShell:
+
+```powershell
+.\scripts\setup-and-run.ps1
+```
+
+This installs the frontend dependencies and starts both services:
+
+```text
+Frontend: http://localhost:5173
+Backend:  http://localhost:8080
+Swagger:  http://localhost:8080/swagger-ui.html
+```
+
+Local environment files are supported:
+
+```text
+.env
+backend/.env
+```
+
+Examples are available in:
+
+```text
+.env.example
+backend/.env.example
+```
+
 ## Running the Backend
 
 ```powershell

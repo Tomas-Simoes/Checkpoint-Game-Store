@@ -136,17 +136,6 @@ function validateProductForm(form) {
   };
 }
 
-function parseSaleDate(date) {
-  return new Date(`${date}T12:00:00`);
-}
-
-function formatShortDate(date) {
-  return new Intl.DateTimeFormat("pt-PT", {
-    day: "2-digit",
-    month: "short"
-  }).format(date);
-}
-
 function formatDateTime(date) {
   if (!date) {
     return "Sem registo";
@@ -174,97 +163,12 @@ function formatInvoiceDate(date) {
   }).format(new Date(date));
 }
 
-function getWeekStart(date) {
-  const weekStart = new Date(date);
-  const day = weekStart.getDay() || 7;
-
-  weekStart.setDate(weekStart.getDate() - day + 1);
-
-  return weekStart;
-}
-
-function getRevenuePeriod(sale, period) {
-  const saleDate = parseSaleDate(sale.date);
-
-  if (period === "month") {
-    return {
-      key: `${saleDate.getFullYear()}-${saleDate.getMonth() + 1}`,
-      label: new Intl.DateTimeFormat("pt-PT", {
-        month: "long",
-        year: "numeric"
-      }).format(saleDate)
-    };
-  }
-
-  if (period === "week") {
-    const weekStart = getWeekStart(saleDate);
-    const weekEnd = new Date(weekStart);
-
-    weekEnd.setDate(weekStart.getDate() + 6);
-
-    return {
-      key: weekStart.toISOString().slice(0, 10),
-      label: `${formatShortDate(weekStart)} - ${formatShortDate(weekEnd)}`
-    };
-  }
-
-  return {
-    key: sale.date,
-    label: new Intl.DateTimeFormat("pt-PT", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric"
-    }).format(saleDate)
-  };
-}
-
-function buildAdminStats(products, sales, revenuePeriod) {
-  const soldProducts = [...products].sort((first, second) => second.sold - first.sold);
-  const leastSoldProducts = [...products].sort((first, second) => first.sold - second.sold);
-  const billableSales = sales.filter((sale) => billableSaleStatuses.has(sale.status));
-  const clients = new Map();
-  const revenue = new Map();
-
-  billableSales.forEach((sale) => {
-    const currentClient = clients.get(sale.customer) ?? {
-      customer: sale.customer,
-      orders: 0,
-      quantity: 0,
-      total: 0
-    };
-
-    clients.set(sale.customer, {
-      ...currentClient,
-      orders: currentClient.orders + 1,
-      quantity: currentClient.quantity + sale.quantity,
-      total: currentClient.total + sale.total
-    });
-
-    const period = getRevenuePeriod(sale, revenuePeriod);
-    const currentRevenue = revenue.get(period.key) ?? {
-      label: period.label,
-      orders: 0,
-      total: 0
-    };
-
-    revenue.set(period.key, {
-      ...currentRevenue,
-      orders: currentRevenue.orders + 1,
-      total: currentRevenue.total + sale.total
-    });
-  });
-
-  return {
-    bestClients: [...clients.values()]
-      .sort((first, second) => second.total - first.total)
-      .slice(0, 5),
-    leastSoldProducts: leastSoldProducts.slice(0, 5),
-    revenueByPeriod: [...revenue.entries()]
-      .sort(([firstKey], [secondKey]) => secondKey.localeCompare(firstKey))
-      .map(([, value]) => value),
-    topSoldProducts: soldProducts.slice(0, 5)
-  };
-}
+const emptyStats = {
+  bestClients: [],
+  leastSoldProducts: [],
+  revenueByPeriod: [],
+  topSoldProducts: []
+};
 
 export function AdminPage() {
   const { logout, user } = useAuth();
@@ -279,6 +183,7 @@ export function AdminPage() {
   const [sales, setSales] = useState([]);
   const [selectedInvoiceId, setSelectedInvoiceId] = useState(null);
   const [status, setStatus] = useState("loading");
+  const [stats, setStats] = useState(emptyStats);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -288,12 +193,14 @@ export function AdminPage() {
       adminApi.getProducts({ signal: controller.signal }),
       adminApi.getSales({ signal: controller.signal }),
       adminApi.getInvoices({ signal: controller.signal }),
+      adminApi.getStats(revenuePeriod, { signal: controller.signal }),
       adminApi.getUsers({ signal: controller.signal })
     ])
-      .then(([productsResponse, salesResponse, invoicesResponse, usersResponse]) => {
+      .then(([productsResponse, salesResponse, invoicesResponse, statsResponse, usersResponse]) => {
         setProducts(productsResponse);
         setSales(salesResponse);
         setInvoices(invoicesResponse);
+        setStats(statsResponse);
         setUsers(usersResponse);
         setStatus("success");
       })
@@ -310,15 +217,11 @@ export function AdminPage() {
       });
 
     return () => controller.abort();
-  }, []);
+  }, [revenuePeriod]);
 
   const summary = useMemo(
     () => summarizeProducts(products, sales),
     [products, sales]
-  );
-  const stats = useMemo(
-    () => buildAdminStats(products, sales, revenuePeriod),
-    [products, revenuePeriod, sales]
   );
   const invoicesBySaleId = useMemo(
     () => new Map(invoices.map((invoice) => [invoice.saleId, invoice])),
@@ -355,6 +258,11 @@ export function AdminPage() {
     setActivePanel("products");
   }
 
+  async function refreshStats() {
+    const statsResponse = await adminApi.getStats(revenuePeriod);
+    setStats(statsResponse);
+  }
+
   async function submitProduct(event) {
     event.preventDefault();
     setFormError("");
@@ -387,6 +295,7 @@ export function AdminPage() {
         setMessage("Produto criado.");
       }
 
+      await refreshStats();
       resetForm();
     } catch (error) {
       reportAppError(error, {
@@ -408,6 +317,7 @@ export function AdminPage() {
       setProducts((currentProducts) =>
         currentProducts.filter((product) => product.id !== productId)
       );
+      await refreshStats();
       setMessage("Produto removido.");
     } catch (error) {
       reportAppError(error, {
@@ -447,6 +357,7 @@ export function AdminPage() {
         currentSales.map((sale) => (sale.id === saleId ? updatedSale : sale))
       );
       setInvoices(invoicesResponse);
+      await refreshStats();
     } catch (error) {
       reportAppError(error, {
         actionHref: "#/admin",

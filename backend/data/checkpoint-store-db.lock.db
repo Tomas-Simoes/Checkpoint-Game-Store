@@ -1,6 +1,6 @@
 #FileLock
-#Sun May 24 16:36:12 WEST 2026
-hostName=DESKTOP-R83N22V
-id=19e5aa1004c6dd40014e887bca469182a7ac2d9dbdf
+#Fri May 29 10:20:15 WEST 2026
+hostName=fedora
+id=19e7308bf258a3c0172fcee20bfea86605efb7579e1
 method=file
-server=169.254.83.107\:53060
+server=172.16.38.1\:36333
