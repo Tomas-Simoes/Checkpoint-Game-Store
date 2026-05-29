@@ -63,6 +63,8 @@ export function AuthProvider({ children }) {
     [applySession]
   );
 
+
+  // check login when app starts
   useEffect(() => {
     const storedToken = getStoredAuthToken();
 
@@ -90,6 +92,7 @@ export function AuthProvider({ children }) {
     };
   }, [applySession, clearSession, validateSession]);
 
+  // validate session every 60s
   useEffect(() => {
     if (status !== "authenticated" || !token) {
       return undefined;
