@@ -4,47 +4,6 @@ Checkpoint Game Store is an online store project with a React/Vite frontend and 
 
 The backend supports product and category management, customer registration and authentication, online purchases, stock control, invoice generation, and store statistics.
 
-## Features
-
-- Public product catalog organized by categories.
-- Product search and filtering.
-- Admin CRUD operations for products and categories.
-- Customer registration and login.
-- JWT-based authentication.
-- Password hashing with BCrypt.
-- Customer profile management.
-- Online purchase flow for authenticated customers.
-- Automatic stock control.
-- Invoice generation for each sale.
-- Admin sales management.
-- Store statistics:
-  - best-selling products;
-  - least-selling products;
-  - best customers;
-  - revenue by day, week, or month.
-- Interactive API documentation with Swagger UI.
-- Local H2 database with seed data.
-
-## Tech Stack
-
-### Backend
-
-- Java 17+
-- Spring Boot
-- Spring Web
-- Spring Data JPA
-- Spring Security
-- H2 Database
-- Maven Wrapper
-- springdoc-openapi / Swagger UI
-
-### Frontend
-
-- React
-- Vite
-- JavaScript
-- CSS
-
 ## Requirements
 
 - Java 17 or newer.
