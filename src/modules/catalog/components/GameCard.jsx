@@ -2,10 +2,14 @@ import { formatPrice, formatRating } from "../../../utils/formatters.js";
 
 export function GameCard({ game }) {
   const detailHref = `#/jogos/${encodeURIComponent(game.slug)}`;
+  const coverClassName = game.imageUrl
+    ? "game-cover cover-image"
+    : `game-cover ${game.cover ?? "cover-default"}`;
 
   return (
     <article className="game-card">
-      <div className={`game-cover ${game.cover}`} aria-hidden="true">
+      <div className={coverClassName} aria-hidden="true">
+        {game.imageUrl ? <img src={game.imageUrl} alt="" /> : null}
         <span className="cover-orbit" />
         <span className="cover-pixels" />
       </div>
@@ -24,9 +28,7 @@ export function GameCard({ game }) {
         </div>
         <div className="game-bottom">
           <span className="game-price">{formatPrice(game.price)}</span>
-          <a href={detailHref}>
-            Detalhes
-          </a>
+          <a href={detailHref}>Detalhes</a>
         </div>
       </div>
     </article>
